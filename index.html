@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AGÜERO. | Ingeniería Visual y Estrategia de Marca.">
+    <title>AGÜERO. | Evoluciona tu marca</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@700;800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. DESIGN TOKENS (SISTEMA AGÜERO) --- */
+        :root {
+            /* Paleta de Color */
+            --bg-void: #0A0A0B;          
+            --bg-surface: #1A1A1C;       
+            --bg-surface-hover: #222225; 
+            --text-primary: #EDEDED;     
+            --text-secondary: #A1A1AA;   
+            --text-inverse: #0A0A0B;     
+            
+            /* Acentos */
+            --accent-lime: #D4FF00;      
+            --accent-blue: #4D4DFF;      
+            --accent-alert: #FF4444;
+            
+            /* Estructura */
+            --border-grid: #333333;      
+            
+            /* Tipografía */
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-tech: 'Roboto Mono', monospace;
+            
+            /* Espaciado y Geometría */
+            --margin-safe: 80px;         
+            --radius-sm: 4px;            
+        }
+
+        /* --- 2. RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- NUEVO: EFECTO GLOW LIMA --- */
+        .glow-lime {
+            color: var(--accent-lime);
+            /* Sombra de texto múltiple para crear el halo de luz */
+            text-shadow: 0 0 10px var(--accent-lime), 0 0 20px rgba(212, 255, 0, 0.5);
+        }
+
+        /* --- 3. BACKGROUND GRID (RETÍCULA VISIBLE) --- */
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            background-size: 80px 80px;
+            background-image:
+                linear-gradient(to right, var(--border-grid) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--border-grid) 1px, transparent 1px);
+            opacity: 0.15;
+        }
+
+        /* --- 4. NAVBAR --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px var(--margin-safe);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(10, 10, 11, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-grid);
+        }
+
+        /* NUEVO: Estilo para el logo de imagen */
+        .logo-img {
+            height: 32px; /* Ajusta la altura según tu logo */
+            width: auto;  /* Mantiene la proporción */
+            display: block;
+        }
+
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+
+        .nav-item {
+            font-family: var(--font-tech);
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .nav-item:hover { color: var(--accent-lime); }
+
+        .nav-btn-outline {
+            font-family: var(--font-tech);
+            color: var(--accent-blue);
+            font-size: 14px;
+            border: 1px solid var(--accent-blue);
+            padding: 8px 16px;
+            transition: all 0.3s;
+        }
+        .nav-btn-outline:hover { background: var(--accent-blue); color: var(--text-primary); }
+
+        /* --- 5. HERO SECTION --- */
+        .hero-section {
+            min-height: 100vh;
+            padding: 0 var(--margin-safe);
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            align-items: center;
+            border-bottom: 1px solid var(--border-grid);
+            padding-top: 80px;
+        }
+
+        .hero-content { position: relative; z-index: 2; }
+
+        .overline {
+            font-family: var(--font-tech);
+            color: var(--accent-blue);
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(64px, 7vw, 120px);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            margin-bottom: 32px;
+            margin-left: -4px;
+            text-transform: uppercase;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 550px;
+            margin-bottom: 48px;
+            border-left: 1px solid var(--accent-blue);
+            padding-left: 24px;
+        }
+
+        /* Botón Tech Afilado */
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--accent-lime);
+            color: var(--text-inverse);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 18px;
+            padding: 16px 40px;
+            clip-path: polygon(0 0, 100% 0, 100% 75%, 92% 100%, 0 100%);
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 0 20px rgba(212, 255, 0, 0.3); }
+
+        /* Columna Tech Derecha (Decorativa) */
+        .hero-tech {
+            border-left: 1px solid var(--border-grid);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 60px;
+        }
+        .tech-row {
+            font-family: var(--font-tech);
+            color: var(--accent-blue);
+            font-size: 14px;
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+            display: flex; align-items: center;
+        }
+        .status-dot { width: 8px; height: 8px; background: var(--accent-blue); border-radius: 50%; margin-right: 12px; box-shadow: 0 0 10px var(--accent-blue); }
+
+        /* --- 6. PROBLEM SECTION (ERROR LOGS) --- */
+        .problem-section { padding: 120px var(--margin-safe); border-bottom: 1px solid var(--border-grid); }
+        
+        .section-header { margin-bottom: 60px; }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 56px;
+            line-height: 1;
+            color: var(--text-primary);
+            text-transform: uppercase;
+        }
+        .tech-divider { width: 60px; height: 4px; background: var(--accent-lime); margin: 32px 0; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+        .body-text { font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; }
+
+        /* Estilo de Tarjetas de Error */
+        .problem-stack { display: flex; flex-direction: column; gap: 16px; }
+        
+        .error-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-grid);
+            padding: 24px;
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; gap: 20px;
+            transition: 0.3s;
+            border-left: 3px solid transparent;
+        }
+        .error-card:hover {
+            transform: translateX(10px);
+            border-color: var(--accent-alert);
+            border-left: 3px solid var(--accent-alert);
+            background: #181111; 
+        }
+        .error-icon { font-family: var(--font-tech); color: var(--accent-alert); font-weight: 700; }
+        .error-text { font-family: var(--font-body); color: var(--text-secondary); }
+
+        .btn-text-link {
+            display: inline-flex; align-items: center; margin-top: 32px;
+            font-family: var(--font-tech); font-size: 14px; color: var(--text-primary);
+            border-bottom: 1px solid var(--accent-lime); padding-bottom: 4px; gap: 8px;
+        }
+        .btn-text-link:hover { color: var(--accent-lime); gap: 12px; text-shadow: 0 0 10px var(--accent-lime); }
+
+        /* --- 7. METHOD SECTION (BENTO GRID) --- */
+        .method-section, .pricing-section { padding: 120px var(--margin-safe); border-bottom: 1px solid var(--border-grid); }
+        .section-desc { font-size: 20px; color: var(--text-secondary); margin-top: 20px; max-width: 600px; }
+
+        .bento-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
+
+        .bento-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-grid);
+            padding: 32px;
+            border-radius: var(--radius-sm);
+            transition: 0.3s;
+            display: flex; flex-direction: column; justify-content: space-between;
+            min-height: 280px;
+        }
+        .bento-card:hover { border-color: var(--accent-blue); transform: translateY(-5px); background: var(--bg-surface-hover); box-shadow: 0 10px 30px -10px rgba(77, 77, 255, 0.2); }
+        .bento-card.highlight { border-color: var(--accent-blue); }
+
+        .step-number { font-family: var(--font-tech); color: var(--accent-lime); font-size: 32px; font-weight: 700; margin-bottom: 24px; display: block; opacity: 0.8; }
+        .card-title { font-family: var(--font-display); font-size: 24px; line-height: 1; margin-bottom: 16px; text-transform: uppercase; }
+        .card-body { font-size: 16px; color: var(--text-secondary); }
+
+        /* --- 8. PRICING CARDS --- */
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; }
+
+        .price-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-grid);
+            padding: 40px;
+            border-radius: var(--radius-sm);
+            position: relative;
+            transition: 0.3s;
+            display: flex; flex-direction: column;
+        }
+        .price-card:hover { border-color: var(--accent-lime); box-shadow: 0 0 20px rgba(212, 255, 0, 0.1); }
+        .price-card.featured { border: 1px solid var(--accent-lime); background: #111113; }
+
+        .tag-recommend {
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--accent-lime); color: var(--bg-void);
+            font-family: var(--font-tech); font-size: 12px; font-weight: 700; padding: 4px 12px;
+        }
+
+        .price { font-size: 40px; font-family: var(--font-display); font-weight: 700; color: var(--accent-lime); margin-top: 16px; line-height: 1; text-shadow: 0 0 15px rgba(212, 255, 0, 0.3); }
+        
+        .plan-duration {
+            font-family: var(--font-tech);
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .plan-features { margin: 32px 0; border-top: 1px solid var(--border-grid); padding-top: 32px; flex-grow: 1; }
+        .plan-features li { margin-bottom: 12px; font-family: var(--font-tech); font-size: 13px; color: var(--text-primary); display: flex; gap: 8px; }
+
+        .btn-outline {
+            display: block; text-align: center; width: 100%;
+            border: 1px solid var(--text-secondary); color: var(--text-primary);
+            padding: 14px; font-family: var(--font-tech); font-size: 14px;
+            transition: 0.3s;
+        }
+        .btn-outline:hover { border-color: var(--accent-lime); color: var(--accent-lime); box-shadow: 0 0 15px rgba(212, 255, 0, 0.2); }
+        .full-width { width: 100%; text-align: center; display: block; }
+
+        /* --- 9. FOOTER --- */
+        footer { padding: 80px var(--margin-safe); background: var(--bg-void); border-top: 1px solid var(--border-grid); }
+        .footer-content { display: flex; justify-content: space-between; padding-bottom: 40px; border-bottom: 1px solid var(--border-grid); align-items: center; }
+        .footer-tagline { font-family: var(--font-tech); color: var(--text-secondary); margin-top: 8px; }
+        .socials a { margin-left: 24px; font-family: var(--font-tech); font-size: 14px; color: var(--text-secondary); }
+        .socials a:hover { color: var(--accent-lime); text-shadow: 0 0 10px var(--accent-lime); }
+        .footer-legal { margin-top: 24px; font-family: var(--font-tech); font-size: 12px; color: var(--text-secondary); opacity: 0.5; }
+
+        /* Decoración HUD */
+        .hud-corner { position: fixed; width: 40px; height: 40px; border: 1px solid var(--border-grid); z-index: 50; pointer-events: none; }
+        .top-left { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+        .bottom-right { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 768px) {
+            :root { --margin-safe: 24px; }
+            .hero-section { grid-template-columns: 1fr; padding-top: 100px; }
+            .hero-tech { display: none; }
+            .grid-2 { grid-template-columns: 1fr; gap: 40px; }
+            h1 { font-size: 48px; }
+            .nav-links { display: none; } 
+            .footer-content { flex-direction: column; gap: 24px; align-items: flex-start; }
+            .socials a { margin-left: 0; margin-right: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-overlay"></div>
+    
+    <div class="hud-corner top-left"></div>
+    <div class="hud-corner bottom-right"></div>
+
+    <nav class="navbar">
+        <img src="img/logo-aguero.svg" alt="AGÜERO." class="logo-img">
+        
+        <ul class="nav-links">
+            <li><a href="#metodo" class="nav-item">Protocolo 4D</a></li>
+            <li><a href="#servicios" class="nav-item">Servicios</a></li>
+            <li><a href="casos.html" class="nav-item">Casos</a></li>
+            <li>
+                <a href="https://wa.me/584141432310" class="nav-btn-outline" target="_blank">[ DIAGNÓSTICO ]</a>
+            </li>
+        </ul>
+    </nav>
+
+    <header class="hero-section">
+        <div class="hero-content">
+            <p class="overline">// INGENIERÍA VISUAL</p>
+            
+            <h1>EVOL<span class="glow-lime">U</span>CIONA<br>TU MARCA<span class="dot glow-lime">.</span></h1>
+            
+            <p class="hero-subtitle">
+                Modernización Funcional. Modernizamos negocios y profesionales que buscan autoridad digital. Deja de competir por precio y empieza a competir por valor.
+            </p>
+            
+            <div class="cta-group">
+                <a href="#servicios" class="btn-primary">VER PLANES -></a>
+            </div>
+        </div>
+
+        <div class="hero-tech">
+            <div class="tech-row"><span class="status-dot"></span>STATUS: DISPONIBLE</div>
+            <div class="tech-row">SYSTEM: V.1.0</div>
+            <div class="tech-row">LOC: VENEZUELA / GLOBAL</div>
+            <div class="tech-row scroll-hint">// SCROLL FOR DATA</div>
+        </div>
+    </header>
+
+    <section class="problem-section">
+        <div class="container grid-2">
+            <div class="text-content">
+                <h2 class="section-title">EL DISEÑO BONITO<br>NO VENDE.</h2>
+                <div class="tech-divider"></div>
+                <p class="body-text">
+                    Tienes un buen producto o servicio, pero tu marca se ve amateur. Te confunden con opciones baratas y te da vergüenza compartir tu web.
+                </p>
+                <a href="casos.html" class="btn-text-link">VER CASOS REALES <span>-></span></a>
+            </div>
+
+            <div class="problem-stack">
+                <div class="error-card">
+                    <span class="error-icon">[ X ]</span>
+                    <span class="error-text">Diseño genérico de plantilla</span>
+                </div>
+                <div class="error-card">
+                    <span class="error-icon">[ X ]</span>
+                    <span class="error-text">Guerra de precios constante</span>
+                </div>
+                <div class="error-card">
+                    <span class="error-icon">[ X ]</span>
+                    <span class="error-text">Invisible ante clientes premium</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="metodo" class="method-section">
+        <div class="section-header">
+            <h2 class="section-title">PROTOCOLO 4D</h2>
+            <p class="section-desc">No vendemos dibujos. Vendemos un sistema de transformación.</p>
+        </div>
+        
+        <div class="bento-grid-4">
+            <div class="bento-card">
+                <span class="step-number">01</span>
+                <h3 class="card-title">DIAGNÓSTICO</h3>
+                <p class="card-body">Auditoría radical con IA para encontrar qué está roto en tu comunicación.</p>
+            </div>
+            <div class="bento-card">
+                <span class="step-number">02</span>
+                <h3 class="card-title">DIFERENCIACIÓN</h3>
+                <p class="card-body">Estrategia pura. Definimos tu ventaja injusta en el mercado.</p>
+            </div>
+            <div class="bento-card highlight">
+                <span class="step-number">03</span>
+                <h3 class="card-title">DISEÑO</h3>
+                <p class="card-body">Ingeniería visual. Creamos sistemas gráficos, no solo logos.</p>
+            </div>
+            <div class="bento-card">
+                <span class="step-number">04</span>
+                <h3 class="card-title">DESPLIEGUE</h3>
+                <p class="card-body">Lanzamiento al mercado con web y activos listos para vender.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="pricing-section">
+        <div class="section-header">
+            <h2 class="section-title">ELIGE TU<br>EVOLUCIÓN</h2>
+        </div>
+        
+        <div class="pricing-grid">
+            <div class="price-card">
+                <div class="plan-header">
+                    <h3>BRAND CORE</h3>
+                    <p class="price">$250 - $350</p>
+                    <p class="plan-duration">// 2 SEMANAS</p>
+                </div>
+                <ul class="plan-features">
+                    <li>// Identidad Visual Esencial</li>
+                    <li>// Logotipo + Tipografía</li>
+                    <li>// Manual Lite</li>
+                </ul>
+                <a href="https://wa.me/584141432310?text=Hola,%20me%20interesa%20el%20plan%20Brand%20Core" class="btn-outline">CONSULTAR</a>
+            </div>
+
+            <div class="price-card featured">
+                <div class="tag-recommend">RECOMENDADO</div>
+                <div class="plan-header">
+                    <h3>DIGITAL PRESENCE</h3>
+                    <p class="price">$500 - $700</p>
+                    <p class="plan-duration">// 4-5 SEMANAS</p>
+                </div>
+                <ul class="plan-features">
+                    <li>// Identidad Visual Full</li>
+                    <li>// Landing Page (Web)</li>
+                    <li>// Kit Redes Sociales</li>
+                </ul>
+                <a href="https://wa.me/584141432310?text=Hola,%20me%20interesa%20el%20plan%20Digital%20Presence" class="btn-primary full-width">EMPEZAR AHORA</a>
+            </div>
+
+            <div class="price-card">
+                <div class="plan-header">
+                    <h3>TOTAL EVOLUTION</h3>
+                    <p class="price">$800 - $1k</p>
+                    <p class="plan-duration">// 6 SEMANAS</p>
+                </div>
+                <ul class="plan-features">
+                    <li>// Estrategia de Marca</li>
+                    <li>// Web Corporativa</li>
+                    <li>// Lanzamiento 360°</li>
+                </ul>
+                <a href="https://wa.me/584141432310?text=Hola,%20me%20interesa%20el%20plan%20Total%20Evolution" class="btn-outline">CONSULTAR</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="brand-col">
+                <img src="img/logo-aguero.svg" alt="AGÜERO." class="logo-img">
+                <p class="footer-tagline">Ingeniería Visual.</p>
+            </div>
+            <div class="socials">
+                <a href="#">INSTAGRAM</a>
+                <a href="#">LINKEDIN</a>
+                <a href="#">EMAIL</a>
+            </div>
+        </div>
+        <div class="footer-legal">
+            <p>&copy; 2025 AGÜERO. SYSTEM V1.0</p>
+        </div>
+    </footer>
+
+</body>
+</html>
