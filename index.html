@@ -107,15 +107,25 @@
         }
         .nav-item:hover { color: var(--accent-lime); }
 
-        .nav-btn-outline {
-            font-family: var(--font-tech);
-            color: var(--accent-blue);
-            font-size: 14px;
-            border: 1px solid var(--accent-blue);
-            padding: 8px 16px;
-            transition: all 0.3s;
-        }
-        .nav-btn-outline:hover { background: var(--accent-blue); color: var(--text-primary); }
+      /* --- BOTÓN NAV CORREGIDO --- */
+.nav-btn-outline {
+    background: transparent; /* Fondo transparente obligatorio */
+    font-family: var(--font-tech);
+    color: var(--accent-blue);
+    font-size: 14px;
+    border: 1px solid var(--accent-blue);
+    padding: 8px 20px;
+    cursor: pointer; /* Para que salga la manito al pasar el mouse */
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.nav-btn-outline:hover {
+    background: var(--accent-blue);
+    color: var(--text-primary); /* Texto blanco al hacer hover */
+    box-shadow: 0 0 15px rgba(77, 77, 255, 0.4); /* Glow Azul */
+}
 
         /* --- 5. HERO SECTION --- */
         .hero-section {
@@ -325,6 +335,83 @@
             .footer-content { flex-direction: column; gap: 24px; align-items: flex-start; }
             .socials a { margin-left: 0; margin-right: 24px; }
         }
+        /* --- MODAL TECH STYLES --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(10, 10, 11, 0.9); /* Fondo Void muy oscuro */
+    backdrop-filter: blur(8px);
+    z-index: 2000; /* Por encima de todo */
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none; /* Oculto por defecto */
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1; pointer-events: auto; /* Visible */
+}
+
+.modal-container {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-grid);
+    width: 90%; max-width: 500px;
+    padding: 40px;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    transform: translateY(20px); transition: transform 0.3s ease;
+    border-top: 2px solid var(--accent-lime); /* Detalle Tech */
+}
+
+.modal-overlay.active .modal-container {
+    transform: translateY(0);
+}
+
+/* Header del Modal */
+.modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 32px; border-bottom: 1px solid var(--border-grid);
+    padding-bottom: 16px;
+}
+
+.modal-title {
+    font-family: var(--font-display); font-size: 24px; color: var(--text-primary);
+}
+
+.modal-close {
+    background: none; border: none; color: var(--text-secondary);
+    font-family: var(--font-tech); cursor: pointer; font-size: 16px;
+    transition: 0.2s;
+}
+.modal-close:hover { color: var(--accent-alert); }
+
+/* Inputs Estilo Terminal */
+.form-group { margin-bottom: 24px; }
+
+.tech-label {
+    display: block; font-family: var(--font-tech); font-size: 12px;
+    color: var(--text-primary); margin-bottom: 8px; letter-spacing: 0.05em;
+}
+
+.tech-input {
+    width: 100%;
+    background: var(--bg-void);
+    border: 1px solid var(--border-grid);
+    color: var(--text-primary);
+    padding: 12px 16px;
+    font-family: var(--font-body); font-size: 16px;
+    border-radius: var(--radius-sm);
+    outline: none; transition: 0.3s;
+}
+
+.tech-input:focus {
+    border-color: var(--accent-lime);
+    box-shadow: 0 0 10px rgba(212, 255, 0, 0.1);
+}
+
+.form-note {
+    font-family: var(--font-tech); font-size: 11px; color: var(--text-secondary);
+    text-align: center; margin-top: 16px; opacity: 0.6;
+}
     </style>
 </head>
 <body>
@@ -342,7 +429,9 @@
             <li><a href="#servicios" class="nav-item">Servicios</a></li>
             <li><a href="casos.html" class="nav-item">Casos</a></li>
             <li>
-                <a href="https://wa.me/584141432310" class="nav-btn-outline" target="_blank">[ DIAGNÓSTICO ]</a>
+                <button class="nav-btn-outline" onclick="toggleModal()">
+    [ DIAGNÓSTICO ]
+</button>
             </li>
         </ul>
     </nav>
@@ -358,7 +447,9 @@
             </p>
             
             <div class="cta-group">
-                <a href="#servicios" class="btn-primary">VER PLANES -></a>
+                <button class="btn-primary" onclick="toggleModal()">
+    INICIAR PROYECTO ->
+</button>
             </div>
         </div>
 
@@ -495,6 +586,55 @@
             <p>&copy; 2025 AGÜERO. SYSTEM V1.0</p>
         </div>
     </footer>
+<div id="briefModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3 class="modal-title">INICIAR PROTOCOLO</h3>
+            <button class="modal-close" onclick="toggleModal()">[ X ]</button>
+        </div>
+        
+       <form class="tech-form" action="https://formspree.io/f/mldqnnbv" method="POST">
+    
+    <div class="form-group">
+        <label class="tech-label">// TU CORREO ELECTRÓNICO</label>
+        <input type="email" name="email" class="tech-input" placeholder="nombre@empresa.com" required>
+    </div>
 
+    <div class="form-group">
+        <label class="tech-label">// SELECCIONA TU OBJETIVO</label>
+        <select name="plan" class="tech-input">
+            <option value="" disabled selected>-- SELECCIONAR PLAN --</option>
+            <option value="brand-core">PACK A: BRAND CORE</option>
+            <option value="digital-presence">PACK B: DIGITAL PRESENCE</option>
+            <option value="total-evolution">PACK C: TOTAL EVOLUTION</option>
+            <option value="consultoria">DIAGNÓSTICO GENERAL</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="tech-label">// DETALLES DEL PROYECTO</label>
+        <textarea name="mensaje" class="tech-input" rows="3" placeholder="Cuéntame brevemente tu situación actual..."></textarea>
+    </div>
+
+    <button type="submit" class="btn-primary full-width">ENVIAR DATA -></button>
+    <p class="form-note">Data encriptada. Respuesta en &lt; 24h.</p>
+</form>
+    </div>
+</div>
+
+<script>
+    function toggleModal() {
+        const modal = document.getElementById('briefModal');
+        modal.classList.toggle('active');
+    }
+
+    // Cerrar al hacer clic fuera del cuadro
+    document.getElementById('briefModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            toggleModal();
+        }
+    });
+</script>
+    
 </body>
 </html>
