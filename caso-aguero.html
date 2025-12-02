@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGÜERO. | Case Study: Project Zero</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@700;800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. ESTILOS BASE (SISTEMA AGÜERO CORE)
+           ========================================= */
+        :root {
+            /* Paleta de Color */
+            --bg-void: #0A0A0B;          
+            --bg-surface: #1A1A1C;       
+            --bg-surface-hover: #222225; 
+            --text-primary: #EDEDED;     
+            --text-secondary: #A1A1AA;   
+            --text-inverse: #0A0A0B;     
+            
+            /* Acentos */
+            --accent-lime: #D4FF00;      
+            --accent-blue: #4D4DFF;      
+            
+            /* Estructura */
+            --border-grid: #333333;      
+            
+            /* Tipografía */
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-tech: 'Roboto Mono', monospace;
+            
+            /* Espaciado */
+            --margin-safe: 80px;         
+            --radius-sm: 4px;            
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* Grid Overlay */
+        .grid-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: -1;
+            background-size: 80px 80px;
+            background-image: linear-gradient(to right, var(--border-grid) 1px, transparent 1px), linear-gradient(to bottom, var(--border-grid) 1px, transparent 1px);
+            opacity: 0.15;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px var(--margin-safe); position: fixed; width: 100%; top: 0;
+            background: rgba(10, 10, 11, 0.95); backdrop-filter: blur(10px);
+            z-index: 1000; border-bottom: 1px solid var(--border-grid);
+        }
+        .logo-img { height: 32px; width: auto; display: block; }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-item { font-family: var(--font-tech); font-size: 14px; color: var(--text-secondary); text-transform: uppercase; }
+        .nav-item:hover { color: var(--accent-lime); }
+
+        /* Botones */
+        .btn-primary {
+            display: inline-block; background-color: var(--accent-lime); color: var(--text-inverse);
+            font-family: var(--font-display); font-weight: 700; font-size: 18px; padding: 16px 40px;
+            clip-path: polygon(0 0, 100% 0, 100% 75%, 92% 100%, 0 100%); transition: transform 0.2s;
+            border: none; cursor: pointer;
+        }
+        .btn-primary:hover { transform: translateY(-4px); }
+
+        /* Footer */
+        footer { padding: 80px var(--margin-safe); border-top: 1px solid var(--border-grid); }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; padding-bottom: 40px; border-bottom: 1px solid var(--border-grid); }
+        .socials a { margin-left: 24px; font-family: var(--font-tech); font-size: 14px; color: var(--text-secondary); }
+        .socials a:hover { color: var(--accent-lime); }
+        .footer-tagline { font-family: var(--font-tech); color: var(--text-secondary); margin-top: 8px; }
+        .footer-legal { margin-top: 24px; font-family: var(--font-tech); font-size: 12px; color: var(--text-secondary); opacity: 0.5; }
+
+        /* =========================================
+           2. ESTILOS ESPECÍFICOS DEL CASO
+           ========================================= */
+        
+        /* Hero Ajustado */
+        .hero-section {
+            padding: 160px var(--margin-safe) 80px;
+            border-bottom: 1px solid var(--border-grid);
+            display: grid; grid-template-columns: 2fr 1fr; gap: 40px;
+        }
+        
+        .case-meta { display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
+        .meta-tag { font-family: var(--font-tech); color: var(--accent-lime); border: 1px solid var(--accent-lime); padding: 4px 12px; font-size: 12px; letter-spacing: 0.05em; }
+        
+        h1 { font-family: var(--font-display); font-size: 64px; line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 24px; text-transform: uppercase; }
+        .hero-subtitle { font-size: 20px; color: var(--text-secondary); max-width: 600px; border-left: 1px solid var(--accent-blue); padding-left: 24px; }
+        
+        .hero-tech { border-left: 1px solid var(--border-grid); padding-left: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .tech-row { font-family: var(--font-tech); color: var(--accent-blue); font-size: 14px; margin-bottom: 16px; display: flex; align-items: center; }
+
+        /* Narrativa y Galería */
+        .gallery-section { padding: 80px var(--margin-safe); }
+        
+        .narrative-block { max-width: 800px; margin: 0 auto 80px; }
+        .narrative-title { font-family: var(--font-display); font-size: 32px; color: var(--text-primary); margin-bottom: 24px; display: flex; align-items: center; gap: 16px; }
+        .narrative-title::before { content: ''; width: 40px; height: 4px; background: var(--accent-lime); display: block; }
+        .narrative-text { font-size: 18px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; }
+
+        /* Grid Masonry Tech */
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .full-width { grid-column: span 2; }
+        
+        .gallery-item {
+            background: var(--bg-surface); border: 1px solid var(--border-grid);
+            padding: 16px; border-radius: var(--radius-sm);
+        }
+        .gallery-img { width: 100%; height: auto; display: block; filter: grayscale(20%); transition: 0.5s; border-radius: 2px; }
+        .gallery-img:hover { filter: grayscale(0%); }
+        .img-caption { font-family: var(--font-tech); color: var(--accent-blue); font-size: 12px; margin-top: 16px; display: block; letter-spacing: 0.05em; }
+
+        /* Paleta de Colores Tech */
+        .palette-grid { display: flex; width: 100%; height: 120px; border: 1px solid var(--border-grid); margin-top: 40px; }
+        .swatch { flex-grow: 1; height: 100%; display: flex; align-items: end; padding: 16px; font-family: var(--font-tech); font-size: 11px; transition: 0.3s; }
+        .swatch:hover { flex-grow: 2; } /* Efecto acordeón */
+
+        /* Sección Final CTA */
+        .next-case-section { padding: 120px var(--margin-safe); text-align: center; border-top: 1px solid var(--border-grid); }
+        .section-desc { font-size: 20px; color: var(--text-secondary); margin: 24px auto 40px; max-width: 600px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root { --margin-safe: 24px; }
+            .hero-section { grid-template-columns: 1fr; padding-top: 120px; }
+            .hero-tech { display: none; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+            .nav-links { display: none; }
+            .footer-content { flex-direction: column; gap: 24px; align-items: flex-start; }
+            .socials a { margin-left: 0; margin-right: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-overlay"></div>
+
+    <nav class="navbar">
+        <a href="index.html">
+            <img src="img/logo-aguero.svg" alt="AGÜERO." class="logo-img">
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-item">Inicio</a></li>
+            <li><a href="casos.html" class="nav-item">Volver a Casos</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero-section">
+        <div class="hero-content">
+            <div class="case-meta">
+                <span class="meta-tag">CLIENTE: INTERNO</span>
+                <span class="meta-tag">AÑO: 2025</span>
+                <span class="meta-tag">SERVICIOS: BRANDING + WEB + RRSS</span>
+            </div>
+            <h1>AGÜERO<span style="color: var(--accent-lime)">.</span><br>BRAND SYSTEM</h1>
+            <p class="hero-subtitle">
+                Definir nuestra propia identidad fue el reto más difícil. Creamos un sistema visual basado en "Ingeniería Suiza" para comunicar autoridad sin decir una palabra.
+            </p>
+        </div>
+        
+        <div class="hero-tech">
+            <div class="tech-row">// OBJETIVO: AUTORIDAD</div>
+            <div class="tech-row">// ESTILO: SWISS TECH</div>
+            <div class="tech-row">// RESULTADO: DEPLOYED</div>
+        </div>
+    </header>
+
+    <section class="gallery-section">
+        
+        <div class="narrative-block">
+            <h2 class="narrative-title">01. EL PROBLEMA</h2>
+            <p class="narrative-text">
+                El mercado venezolano está polarizado: o contratas a una agencia lenta y burocrática, o a un freelancer barato que desaparece. No había un punto medio que ofreciera <strong>calidad de agencia con velocidad de startup</strong>.
+            </p>
+            <p class="narrative-text">
+                Necesitábamos una identidad que gritara "Funcionalidad Radical". Nada de adornos. Nada de "diseño bonito". Pura estructura.
+            </p>
+        </div>
+
+        <div class="gallery-grid">
+            
+            <div class="gallery-item full-width">
+                <img src="img/case-aguero-logo-grid.jpg" alt="Construcción del Logo" class="gallery-img">
+                <span class="img-caption">// FIG 01. RETÍCULA DE CONSTRUCCIÓN DEL LOGOTIPO</span>
+            </div>
+
+            <div class="narrative-block full-width" style="margin-top: 40px; margin-bottom: 0;">
+                <h3 class="narrative-title" style="border-color: var(--accent-blue)">02. SISTEMA VISUAL</h3>
+                <p class="narrative-text">
+                    Optamos por el "Swiss Tech-Brutalism". Una paleta oscura para la profundidad (Premium) y acentos neón para la acción (Tech).
+                </p>
+                
+                <div class="palette-grid">
+                    <div class="swatch" style="background: #0A0A0B; color: #fff;">#0A0A0B (VOID)</div>
+                    <div class="swatch" style="background: #D4FF00; color: #000;">#D4FF00 (LIMA)</div>
+                    <div class="swatch" style="background: #4D4DFF; color: #fff;">#4D4DFF (AZUL)</div>
+                    <div class="swatch" style="background: #EDEDED; color: #000;">#EDEDED (TXT)</div>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="img/case-aguero-web.jpg" alt="Diseño Web Desktop" class="gallery-img">
+                <span class="img-caption">// FIG 02. INTERFAZ WEB DESKTOP</span>
+            </div>
+
+            <div class="gallery-item">
+                <img src="img/case-aguero-social.jpg" alt="Kit Redes Sociales" class="gallery-img">
+                <span class="img-caption">// FIG 03. SISTEMA DE CONTENIDO RRSS</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="next-case-section">
+        <h2 style="font-family: var(--font-display); font-size: 48px; color: var(--text-primary); text-transform: uppercase;">
+            RESULTADO
+        </h2>
+        <p class="section-desc">
+            Una marca que filtra a los clientes baratos y atrae a quienes buscan valor. Esto es lo que hacemos por ti.
+        </p>
+        <button class="btn-primary" onclick="window.location.href='index.html#servicios'">
+            APLICAR ESTO A MI MARCA ->
+        </button>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="brand-col">
+                <img src="img/logo-aguero.svg" alt="AGÜERO." class="logo-img">
+                <p class="footer-tagline">Ingeniería Visual.</p>
+            </div>
+            <div class="socials">
+                <a href="#">INSTAGRAM</a>
+                <a href="#">LINKEDIN</a>
+                <a href="#">EMAIL</a>
+            </div>
+        </div>
+        <div class="footer-legal">
+            <p>&copy; 2025 AGÜERO. SYSTEM V1.0</p>
+        </div>
+    </footer>
+
+</body>
+</html>
